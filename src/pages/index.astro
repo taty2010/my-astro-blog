@@ -1,0 +1,73 @@
+---
+let posts = await Astro.glob('../pages/blog/*.md'); // returns an array of posts 
+posts = posts.sort((a, b) => {return b.frontmatter.date.localeCompare(a.frontmatter.date)})
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300&family=Bungee&display=swap" rel="stylesheet">
+		<title>Astro</title>
+	</head>
+	<style>
+		.header-text{
+			background-color: white;
+			color: black;
+			margin: 0 auto;
+			text-align: center;
+			transform: translate(-95%, -50%);
+			mix-blend-mode: screen;
+		}
+		h1,h2,p, em{
+			color: #292e37;
+		}
+		.header-img{
+			mask-image: linear-gradient(180deg, #ffffff, #491f1f4a);
+			-webkit-mask-image: linear-gradient(180deg, #ffffff, #491f1f4a);
+		}
+		.blogs-wrapper{
+			background-image: linear-gradient(116deg, #6eb3c02e,#7e8fab33,#9370b221, #9b67aa29);
+			position: relative;
+			top: 20px
+		}
+		.main-header:hover{
+			box-shadow:20px 11px 17px rgb(0 0 0 / 6%), -9px -10px 11px rgb(255 255 255 / 4%)
+		}
+		.main-header-title{
+			border-bottom: 7px solid #eb9bc2d6;
+    		border-radius: 7px;
+		}
+	</style>
+	<body class="flex flex-col bg-fuchsia-200 bg-[url('/images/main-bg.png')] bg-no-repeat bg-center bg-cover bg-fixed">
+		<section class="backdrop-blur-sm mx-20">
+			<div class="flex flex-col justify-center py-20 bg-[url('/images/hero-bg.jpg')] bg-no-repeat bg-center bg-cover mt-8 rounded-lg h-[90vh] shadow-xl">
+				<h1 class='text-6xl font-display m-auto p-5 rounded-lg header-text'>Astro Blog</h1>
+				<section class="m-auto">
+					<article class="m-auto flex flex-auto my-5 p-5 min-w-[90%] max-w-[90%] h-[50vh] rounded-lg main-header backdrop-blur-sm">
+						<img class="w-2/4 rounded-lg header-img" src={posts[0].frontmatter.thumbnail}>
+						<div class="w-2/4 flex justify-evenly ml-20 flex-col">
+							<em>{posts[0].frontmatter.date.split('T')[0]}</em>
+							<h2 class="text-5xl font-display main-header-title">{posts[0].frontmatter.title}</h2>
+							<p class="font-barlow text-4xl">{posts[0].frontmatter.description}</p>
+							<a href={'blog/' + posts[0].frontmatter.date.split('T')[0] + '-' + posts[0].frontmatter.title.toLowerCase().replace(' ', '-')}>Read More</a>
+						</div>
+					</article>
+				</section>
+			</div>
+			<section class="flex items-center flex-row content-center w-6/6 shadow-xl blogs-wrapper rounded-lg">
+				{posts.slice(1, 5).map((post) => (
+					<article class="flex flex-auto flex-row-reverse my-5 mx-5 p-5 w-[50%] h-[300px] rounded-lg shadow-lg">
+						<img class="w-2/4 rounded-lg" src={post.frontmatter.thumbnail}>
+						<div class="w-2/4 flex justify-center flex-col">
+							<h1 class="text-4xl font-display">{post.frontmatter.title}</h1>
+							<p class="font-barlow">{post.frontmatter.description}</p>
+							<a href={'blog/' + post.frontmatter.date.split('T')[0] + '-' + post.frontmatter.title.toLowerCase().replace(' ', '-')}>Read More</a>
+						</div>
+					</article>
+				))}
+			</section>
+		</section>
+	</body>
+</html>
